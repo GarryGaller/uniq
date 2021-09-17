@@ -60,17 +60,17 @@ EXAMPLES:
 
 ```
 >>cat test.txt
-0
-0
-1
-7
-123
-246
-249
-369
-777
-911
-911
+AAA 0
+aaa 0
+ccc 1
+ddd 7
+eee 123
+fff 246
+ggg 249
+hhh 369
+iii 777
+jjj 911
+jjj 911
 ```
 
 
@@ -104,7 +104,8 @@ iii 777
 ```
 
 **output only unique strings (ignoring case)**
-```uniq -i -u test.txt
+```
+>>>uniq -i -u test.txt
 ccc 1
 ddd 7
 eee 123
