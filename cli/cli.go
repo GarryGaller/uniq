@@ -12,6 +12,7 @@ type Cmd struct {
     Prefix         string
     Repeated       bool
     Unique         bool
+    Count          bool
     IgnoreCase     bool
     NumFields      uint
     SkipChars      uint
@@ -43,9 +44,11 @@ func (cmd *Cmd) Usage() {
 
 func (cmd *Cmd) Parse() {
     flag.Usage = cmd.Usage
-    flag.StringVar(&cmd.Prefix, "c", "", "Количество вхождений подстроки")
+    flag.BoolVar(&cmd.Count, "c", false, "Количество вхождений каждой строки")
     flag.BoolVar(&cmd.Repeated, "d", false, "Вывести только повторяющиеся строки")
     flag.BoolVar(&cmd.Unique, "u", false, "Вывести только уникальные строки")
+    
+    flag.StringVar(&cmd.Prefix, "p", "", "Количество строк в которых есть указанная подстрока")
     
     flag.BoolVar(&cmd.IgnoreCase, "i", false, "Игнорировать регистр при сравнении строк")
     flag.UintVar(&cmd.NumFields, "f", 0, "Игнорировать n полей разделенных пробелом с начала строки")

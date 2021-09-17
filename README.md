@@ -15,14 +15,15 @@ Usage of uniq:
 uniq [-c|-d|-u] [-f num_fields] [-s skip_chars] [-w check_chars] [-range] [-color] [input] [output]
 if input\output not specified, then stdin and stdout are used
 
-  -c string
-        Количество вхождений подстроки
+  -c    Количество вхождений каждой строки
   -color
         Выделять использумый диапазон символов цветом
   -d    Вывести только повторяющиеся строки
   -f uint
         Игнорировать n полей разделенных пробелом с начала строки
   -i    Игнорировать регистр при сравнении строк
+  -p string
+        Количество строк в которых есть указанная подстрока
   -range
         Показать использумый диапазон символов как срез
   -s uint
@@ -43,7 +44,8 @@ Command line help
   * **-help**                  *Show this help message and exit.*
   * **-u**                     *Output only unique strings.*
   * **-d**                     *Output only lines that have repetitions.*
-  * **-c**                     *The number of occurrences of the substring.*
+  * **-c**                     *Number of occurrences of each row*
+  * **-p**                     *The number of rows in which there is a specified substring*  
   * **-f**                     *Skip N fields from the beginning of the string*
   * **-s**                     *Skip N characters from the beginning of the string.* 
   * **-w**                     *Check only n characters of the string.* 
@@ -130,16 +132,47 @@ jjj 911
 ``` 
 
 
+**number of occurrences of each row**
+```
+uniq -c test.txt
+1 AAA 0
+1 aaa 0
+1 ccc 1
+1 ddd 7
+1 eee 123
+1 fff 246
+1 ggg 249
+1 hhh 369
+1 iii 777
+2 jjj 911
+```
+
+
+**number of occurrences of each row (ignoring case)***
+```
+uniq -c test.txt
+2 aaa 0
+1 ccc 1
+1 ddd 7
+1 eee 123
+1 fff 246
+1 ggg 249
+1 hhh 369
+1 iii 777
+2 jjj 911
+```
+
+
 **print the number of occurrences of the substring**
 ```
->>uniq -c=aaa test.txt
-aaa => 1
+>>uniq -p=aaa test.txt
+1 aaa
 ```
 
 **print the number of occurrences of the substring (ignoring case)**
 ```
->>uniq -c=aaa -i test.txt
-aaa => 2
+>>uniq -p=aaa -i test.txt
+2 aaa
 ```
 
 

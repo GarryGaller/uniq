@@ -4,6 +4,7 @@
 *.bat
 *.pdf
 *.txt
+*.dic
 *.dll
 *.so
 *.dylib
@@ -11,4 +12,3 @@
 
 logs/
 vendor/
-
