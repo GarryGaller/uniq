@@ -8,8 +8,7 @@ import (
 	"uniq/cli"
 )
 
-var testFile = (
-`AAA
+var testFile = (`AAA
 aaa
 bbb
 bbb
@@ -31,7 +30,7 @@ func ExampleUnique() {
 	// Output:
 	// AAA
 	// aaa
-    // ccc
+	// ccc
 }
 
 func ExampleUniqueIgnoreCase() {
@@ -65,7 +64,7 @@ func ExampleDuplicatesIgnoreCase() {
 	Duplicates(reader, writer, cmd)
 	// Output:
 	// aaa
-    // bbb
+	// bbb
 }
 
 func ExampleDeduplicate() {
@@ -94,59 +93,55 @@ func ExampleDeduplicateIgnoreCase() {
 	// bbb
 	// ccc
 }
-  
+
 func ExampleCounterLines() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    cmd.Mapper = func(s string) string { return s }
+	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
 
 	CounterLines(reader, writer, cmd)
 	// Output:
 	// 1 AAA
-    // 1 aaa
-    // 2 bbb
-    // 1 ccc
-    
+	// 1 aaa
+	// 2 bbb
+	// 1 ccc
+
 }
-  
 
 func ExampleCounterLinesIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 	cmd.Cutter = func(s string) string { return s }
 
 	CounterLines(reader, writer, cmd)
 	// Output:
 	// 2 aaa
-    // 2 bbb
-    // 1 ccc
-    
+	// 2 bbb
+	// 1 ccc
+
 }
-
-
 
 func ExampleCounterLinesByPrefix() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    cmd.Mapper = func(s string) string { return s }
+	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
-    cmd.Prefix = "aa"
-	
-    CounterLinesByPrefix(reader, writer, cmd)
+	cmd.Prefix = "aa"
+
+	CounterLinesByPrefix(reader, writer, cmd)
 	// Output:
 	// 1 aa
 }
-  
 
 func ExampleCounterLinesByPrefixIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 	cmd.Cutter = func(s string) string { return s }
-    cmd.Prefix = "aa"
-    
+	cmd.Prefix = "aa"
+
 	CounterLinesByPrefix(reader, writer, cmd)
 	// Output:
 	// 2 aa

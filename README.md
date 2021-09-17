@@ -61,7 +61,7 @@ EXAMPLES:
 =========
 
 ```
->>cat test.txt
+>>>cat test.txt
 AAA 0
 aaa 0
 ccc 1
@@ -78,7 +78,7 @@ jjj 911
 
 **by default print all lines excluding duplicates**
 ```
->>uniq test.txt
+>>>uniq test.txt
 AAA 0
 aaa 0
 ccc 1
@@ -93,7 +93,7 @@ jjj 911
 
 **output only unique strings**
 ```
->>uniq -u test.txt
+>>>uniq -u test.txt
 AAA 0
 aaa 0
 ccc 1
@@ -120,13 +120,13 @@ iii 777
 
 **output only lines that have duplicates**
 ```
->>uniq -d test.txt
+>>>uniq -d test.txt
 jjj 911
 ```
 
 **output only lines that have duplicates (ignoring case)**
 ```
->>uniq -i -d test.txt
+>>>uniq -i -d test.txt
 aaa 0
 jjj 911
 ``` 
@@ -134,7 +134,7 @@ jjj 911
 
 **number of occurrences of each row**
 ```
-uniq -c test.txt
+>>>uniq -c test.txt
 1 AAA 0
 1 aaa 0
 1 ccc 1
@@ -148,9 +148,9 @@ uniq -c test.txt
 ```
 
 
-**number of occurrences of each row (ignoring case)***
+**number of occurrences of each row (ignoring case)**
 ```
-uniq -c test.txt
+>>>uniq -c test.txt
 2 aaa 0
 1 ccc 1
 1 ddd 7
@@ -165,13 +165,13 @@ uniq -c test.txt
 
 **print the number of occurrences of the substring**
 ```
->>uniq -p=aaa test.txt
+>>>uniq -p=aaa test.txt
 1 aaa
 ```
 
 **print the number of occurrences of the substring (ignoring case)**
 ```
->>uniq -p=aaa -i test.txt
+>>>uniq -p=aaa -i test.txt
 2 aaa
 ```
 
