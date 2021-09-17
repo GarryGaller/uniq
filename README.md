@@ -46,7 +46,7 @@ Command line help
   * **-c**                     *The number of occurrences of the substring.*
   * **-f**                     *Skip N fields from the beginning of the string*
   * **-s**                     *Skip N characters from the beginning of the string.* 
-  * **-t**                     *Take N characters from the beginning of the string (or after SKIP_CHARS).* 
+  * **-w**                     *Check only n characters of the string.* 
   * **-color**                 *Highlight the used range of characters in color*  
   * **-range**                 *Show the used character range as a slice*
 
@@ -140,6 +140,5 @@ aaa => 1
 >>uniq -c=aaa -i test.txt
 aaa => 2
 ```
-
 
 
