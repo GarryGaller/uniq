@@ -96,13 +96,17 @@ func main() {
 				builder.WriteString(line[idx[1]:])
 				line = builder.String()
 			}
-			if cmd.Range {
+			
+            if cmd.Range {
 				line = fmt.Sprintf("[%d:%d] %s", idx[0], idx[1], line)
 			}
-		}
-
-		fmt.Fprintf(writer, "%s\n", line)
-	}
+		    // for coloring works only fmt.Fprintf
+            fmt.Fprintf(writer, "%s\n", line)
+        } else {
+            // Optimal ?
+            io.WriteString(writer, line + "\n")
+        }
+    }
 
 	if cmd.IgnoreCase {
 		cmd.Mapper = strings.ToLower
