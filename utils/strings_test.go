@@ -19,6 +19,9 @@ bbb
 bbb
 ccc`)
 
+var testFile10K = GenerateRandomStrings(10000)
+var testFile100K = GenerateRandomStrings(100000)
+
 var cmd = cli.New()
 
 func init() {
@@ -175,8 +178,7 @@ func GenerateRandomStrings(count int) (outline string) {
 
 func BenchmarkUnique10000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(10000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile10K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -189,8 +191,7 @@ func BenchmarkUnique10000(b *testing.B) {
 
 func BenchmarkDuplicates10000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(10000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile10K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -203,8 +204,7 @@ func BenchmarkDuplicates10000(b *testing.B) {
 
 func BenchmarkDeduplicate10000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(10000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile10K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -217,8 +217,7 @@ func BenchmarkDeduplicate10000(b *testing.B) {
 
 func BenchmarkUnique100000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(100000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile100K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -231,8 +230,7 @@ func BenchmarkUnique100000(b *testing.B) {
 
 func BenchmarkDuplicates100000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(100000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile100K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -245,8 +243,7 @@ func BenchmarkDuplicates100000(b *testing.B) {
 
 func BenchmarkDeduplicate100000(b *testing.B) {
 
-	testFile := GenerateRandomStrings(100000)
-	var reader = strings.NewReader(testFile)
+	var reader = strings.NewReader(testFile100K)
 	var writer = ioutil.Discard
 	cmd.Mapper = func(s string) string { return s }
 	cmd.Cutter = func(s string) string { return s }
@@ -262,11 +259,11 @@ func BenchmarkDeduplicate100000(b *testing.B) {
 //go test -bench=. -benchtime=10x -benchmem
 /*
 BenchmarkUnique10000-4                10            400020 ns/op           36170 B/op       2001 allocs/op
-BenchmarkDuplicates10000-4            10            100000 ns/op           20096 B/op       1001 allocs/op
-BenchmarkDeduplicate10000-4           10            300020 ns/op           36148 B/op       2001 allocs/op
-BenchmarkUnique100000-4               10           3400190 ns/op          324267 B/op      20002 allocs/op
-BenchmarkDuplicates100000-4           10           1200070 ns/op          164096 B/op      10001 allocs/op
-BenchmarkDeduplicate100000-4          10           3300190 ns/op          324244 B/op      20001 allocs/op
+BenchmarkDuplicates10000-4            10            100010 ns/op           20096 B/op       1001 allocs/op
+BenchmarkDeduplicate10000-4           10            300020 ns/op           36170 B/op       2001 allocs/op
+BenchmarkUnique100000-4               10           3200180 ns/op          324245 B/op      20001 allocs/op
+BenchmarkDuplicates100000-4           10           1100070 ns/op          164096 B/op      10001 allocs/op
+BenchmarkDeduplicate100000-4          10           3300190 ns/op          324222 B/op      20001 allocs/op
 PASS
-ok      uniq/utils      1.001s
+ok      uniq/utils      0.394s
 */
