@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-    "math/rand"
+	"math/rand"
 	"os"
 	"strings"
+	"testing"
 	"time"
-    "testing"
-    
+
 	"uniq/cli"
 )
 
@@ -213,9 +213,8 @@ func BenchmarkDeduplicate10000(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		Deduplicate(reader, writer, cmd)
 	}
-}  
+}
 
- 
 func BenchmarkUnique100000(b *testing.B) {
 
 	testFile := GenerateRandomStrings(100000)
@@ -229,7 +228,6 @@ func BenchmarkUnique100000(b *testing.B) {
 		Unique(reader, writer, cmd)
 	}
 }
- 
 
 func BenchmarkDuplicates100000(b *testing.B) {
 
@@ -257,12 +255,11 @@ func BenchmarkDeduplicate100000(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		Deduplicate(reader, writer, cmd)
 	}
-} 
-
+}
 
 // go test
 // benchmarks
-//go test -bench=. -benchtime=10x -benchmem 
+//go test -bench=. -benchtime=10x -benchmem
 /*
 BenchmarkUnique10000-4                10            400020 ns/op           36170 B/op       2001 allocs/op
 BenchmarkDuplicates10000-4            10            100000 ns/op           20096 B/op       1001 allocs/op
