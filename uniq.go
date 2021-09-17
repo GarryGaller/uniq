@@ -51,7 +51,11 @@ func main() {
 	cmd.Parse()
 
 	var groupCDU int8
-	if cmd.Prefix != "" {
+	if cmd.Count {
+		groupCDU += 1
+	}
+    
+    if cmd.Prefix != "" {
 		groupCDU += 1
 	}
 
@@ -64,7 +68,7 @@ func main() {
 	}
 
 	if groupCDU > 1 {
-		fmt.Println("Опции группы {-c|-d|-u} взаимоисключающие")
+		fmt.Println("Опции группы {-c|-d|-u|-p} взаимоисключающие")
 		flag.Usage()
 		os.Exit(0)
 	}

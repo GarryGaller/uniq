@@ -12,7 +12,7 @@ uniq 1.0
 Author: Garry G.
 
 Usage of uniq:
-uniq [-c|-d|-u] [-f num_fields] [-s skip_chars] [-w check_chars] [-range] [-color] [input] [output]
+uniq [-c|-d|-u|-p] [-f num_fields] [-s skip_chars] [-w check_chars] [-range] [-color] [input] [output]
 if input\output not specified, then stdin and stdout are used
 
   -c    Количество вхождений каждой строки

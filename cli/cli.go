@@ -33,7 +33,7 @@ func (cmd *Cmd) Usage() {
         ("%s 1.0\n" +
             "Author: Garry G.\n\n" +
             "Usage of %s:\n" +
-            "uniq [-c|-d|-u] [-f num_fields] [-s skip_chars] [-w check_chars] [-range] [-color] [input] [output]\n" +
+            "uniq [-c|-d|-u|-p] [-f num_fields] [-s skip_chars] [-w check_chars] [-range] [-color] [input] [output]\n" +
             "if input\\output not specified, then stdin and stdout are used\n" +
             "\n"),
         filepath.Base(os.Args[0]),
