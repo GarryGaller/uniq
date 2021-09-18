@@ -1,16 +1,16 @@
 package utils
 
 import (
-	"fmt"
-	"io"
-	"io/ioutil"
-	"math/rand"
-	"os"
-	"strings"
-	"testing"
-	"time"
+    "fmt"
+    "io"
+    "io/ioutil"
+    "math/rand"
+    "os"
+    "strings"
+    "testing"
+    "time"
 
-	"uniq/cli"
+    "uniq/cli"
 )
 
 var testFile = (`AAA
@@ -25,296 +25,331 @@ var testFile100K = GenerateRandomStrings(100000)
 var cmd = cli.New()
 
 func init() {
-	cmd.Fprintln = func(w io.Writer, s string) { fmt.Fprintln(w, s) }
+    cmd.Fprintln = func(w io.Writer, s string) { fmt.Fprintln(w, s) }
 }
 
 func ExampleUnique() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
 
-	Unique(reader, writer, cmd)
-	// Output:
-	// AAA
-	// aaa
-	// ccc
+    Unique(reader, writer, cmd)
+    // Output:
+    // AAA
+    // aaa
+    // ccc
 }
 
 func ExampleUniqueIgnoreCase() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = strings.ToLower
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = strings.ToLower
+    cmd.Cutter = func(s string) string { return s }
 
-	Unique(reader, writer, cmd)
-	// Output:
-	// ccc
+    Unique(reader, writer, cmd)
+    // Output:
+    // ccc
 }
 
 func ExampleDuplicates() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
 
-	Duplicates(reader, writer, cmd)
-	// Output:
-	// bbb
+    Duplicates(reader, writer, cmd)
+    // Output:
+    // bbb
 }
 
 func ExampleDuplicatesIgnoreCase() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = strings.ToLower
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = strings.ToLower
+    cmd.Cutter = func(s string) string { return s }
 
-	Duplicates(reader, writer, cmd)
-	// Output:
-	// aaa
-	// bbb
+    Duplicates(reader, writer, cmd)
+    // Output:
+    // aaa
+    // bbb
 }
 
 func ExampleDeduplicate() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
 
-	Deduplicate(reader, writer, cmd)
-	// Output:
-	// AAA
-	// aaa
-	// bbb
-	// ccc
+    Deduplicate(reader, writer, cmd)
+    // Output:
+    // AAA
+    // aaa
+    // bbb
+    // ccc
 }
 
 func ExampleDeduplicateIgnoreCase() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = strings.ToLower
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = strings.ToLower
+    cmd.Cutter = func(s string) string { return s }
 
-	Deduplicate(reader, writer, cmd)
-	// Output:
-	// aaa
-	// bbb
-	// ccc
+    Deduplicate(reader, writer, cmd)
+    // Output:
+    // aaa
+    // bbb
+    // ccc
 }
 
 func ExampleCounterLines() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
 
-	CounterLines(reader, writer, cmd)
-	// Output:
-	// 1 AAA
-	// 1 aaa
-	// 2 bbb
-	// 1 ccc
+    CounterLines(reader, writer, cmd)
+    // Output:
+    // 1 AAA
+    // 1 aaa
+    // 2 bbb
+    // 1 ccc
 
 }
 
 func ExampleCounterLinesIgnoreCase() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = strings.ToLower
-	cmd.Cutter = func(s string) string { return s }
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = strings.ToLower
+    cmd.Cutter = func(s string) string { return s }
 
-	CounterLines(reader, writer, cmd)
-	// Output:
-	// 2 aaa
-	// 2 bbb
-	// 1 ccc
+    CounterLines(reader, writer, cmd)
+    // Output:
+    // 2 aaa
+    // 2 bbb
+    // 1 ccc
 
 }
 
 func ExampleCounterLinesByPrefix() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	cmd.Prefix = "aa"
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    cmd.Prefix = "aa"
 
-	CounterLinesByPrefix(reader, writer, cmd)
-	// Output:
-	// 1 aa
+    CounterLinesByPrefix(reader, writer, cmd)
+    // Output:
+    // 1 aa
 }
 
 func ExampleCounterLinesByPrefixIgnoreCase() {
-	var reader = strings.NewReader(testFile)
-	var writer = os.Stdout
-	cmd.Mapper = strings.ToLower
-	cmd.Cutter = func(s string) string { return s }
-	cmd.Prefix = "aa"
+    var reader = strings.NewReader(testFile)
+    var writer = os.Stdout
+    cmd.Mapper = strings.ToLower
+    cmd.Cutter = func(s string) string { return s }
+    cmd.Prefix = "aa"
 
-	CounterLinesByPrefix(reader, writer, cmd)
-	// Output:
-	// 2 aa
+    CounterLinesByPrefix(reader, writer, cmd)
+    // Output:
+    // 2 aa
 }
 
 func TestSubstring(t *testing.T) {
 
-	testCases := []struct {
-		line     string
-		options  [3]uint // fields,skip,take
-		expected [2]uint // range
-	}{
-		{
+    testCases := []struct {
+        line     string
+        options  [3]uint // fields,skip,take
+        expected [2]uint // range
+    }{
+        {
             "123 456 789",
-			[3]uint{0,0,0},
-			[2]uint{0,11},  // [123 456 789]
-		},
+            [3]uint{0,0,0},
+            [2]uint{0,11},  // [123 456 789]
+        },
 
-		{
+        {
             "123 456 789",
-			[3]uint{1,2,0},
-			[2]uint{6,11}, // 123 45[6 789]
-		},
+            [3]uint{1,2,0},
+            [2]uint{6,11}, // 123 45[6 789]
+        },
         
         {
             "123 456 789",
-			[3]uint{1,2,1}, 
-			[2]uint{6,7},  // 123 45[6] 789
-		},
-		
-        {
-            "123 456 789",
-			[3]uint{0,10,0},
-			[2]uint{10,11},   // 123 456 78[9]
-		},
+            [3]uint{1,2,1}, 
+            [2]uint{6,7},  // 123 45[6] 789
+        },
         
         {
             "123 456 789",
-			[3]uint{0,0,11}, 
-			[2]uint{0,11},  // [123 456 789]
-		},
+            [3]uint{0,10,0},
+            [2]uint{10,11},   // 123 456 78[9]
+        },
         
         {
             "123 456 789",
-			[3]uint{3,0,0},  // 123 45[6] 789
-			[2]uint{11,11},  // []
-		},
-        // fail case
+            [3]uint{0,0,11}, 
+            [2]uint{0,11},  // [123 456 789]
+        },
+        
         {
             "123 456 789",
-			[3]uint{0,0,0},  // 
-			[2]uint{0,0},   //   Substring(123 456 789, 0, 0, 0) = [0 11]; want [0 0]
-		},
-	}
+            [3]uint{3,0,0},   
+            [2]uint{11,11},  // []
+        },
+        
+        {
+            "123 456 789",
+            [3]uint{0,12,0},  
+            [2]uint{11,11},  // []
+        },
+        
+        /* // fail case
+        {
+            "123 456 789",
+            [3]uint{0,0,0},  // 
+            [2]uint{0,0},   //   Substring(123 456 789, 0, 0, 0) = [0 11]; want [0 0]
+        },
+        */
+    }
 
-	for _, c := range testCases {
-		got := Substring(c.line, c.options[0], c.options[1], c.options[2])
-		if got != c.expected {
-			t.Errorf("Substring(%s, %d, %d, %d) = %v; want %v",
-				c.line, c.options[0], c.options[1], c.options[2],
-				got, c.expected)
-		}
-	}
+    for _, c := range testCases {
+        got := Substring(c.line, c.options[0], c.options[1], c.options[2])
+        if got != c.expected {
+            t.Errorf("Substring(%s, %d, %d, %d) = %v; want %v",
+                c.line, c.options[0], c.options[1], c.options[2],
+                got, c.expected)
+        }
+    }
 }
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randSeq(n int) string {
-	b := make([]rune, n)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
+    b := make([]rune, n)
+    for i := range b {
+        b[i] = letters[rand.Intn(len(letters))]
+    }
+    return string(b)
 }
 
 func GenerateRandomStrings(count int) (outline string) {
-	var builder strings.Builder
-	rand.Seed(time.Now().UnixNano())
+    var builder strings.Builder
+    rand.Seed(time.Now().UnixNano())
 
-	for i := 0; i < count; i++ {
-		builder.WriteString(randSeq(10) + "\n")
-	}
-	outline = builder.String()
-	return
+    for i := 0; i < count; i++ {
+        builder.WriteString(randSeq(10) + "\n")
+    }
+    outline = builder.String()
+    return
 }
 
 func BenchmarkUnique10000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile10K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile10K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Unique(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Unique(reader, writer, cmd)
+    }
 }
 
 func BenchmarkDuplicates10000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile10K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile10K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Duplicates(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Duplicates(reader, writer, cmd)
+    }
 }
 
 func BenchmarkDeduplicate10000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile10K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile10K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Deduplicate(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Deduplicate(reader, writer, cmd)
+    }
 }
 
 func BenchmarkUnique100000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile100K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile100K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Unique(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Unique(reader, writer, cmd)
+    }
 }
 
 func BenchmarkDuplicates100000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile100K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile100K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Duplicates(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Duplicates(reader, writer, cmd)
+    }
 }
 
 func BenchmarkDeduplicate100000(b *testing.B) {
 
-	var reader = strings.NewReader(testFile100K)
-	var writer = ioutil.Discard
-	cmd.Mapper = func(s string) string { return s }
-	cmd.Cutter = func(s string) string { return s }
-	b.ResetTimer()
+    var reader = strings.NewReader(testFile100K)
+    var writer = ioutil.Discard
+    cmd.Mapper = func(s string) string { return s }
+    cmd.Cutter = func(s string) string { return s }
+    b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		Deduplicate(reader, writer, cmd)
-	}
+    for i := 0; i < b.N; i++ {
+        Deduplicate(reader, writer, cmd)
+    }
 }
 
-// go test
+// go test -v
+/*
+=== RUN   TestSubstring
+--- PASS: TestSubstring (0.00s)
+=== RUN   ExampleUnique
+--- PASS: ExampleUnique (0.00s)
+=== RUN   ExampleUniqueIgnoreCase
+--- PASS: ExampleUniqueIgnoreCase (0.00s)
+=== RUN   ExampleDuplicates
+--- PASS: ExampleDuplicates (0.00s)
+=== RUN   ExampleDuplicatesIgnoreCase
+--- PASS: ExampleDuplicatesIgnoreCase (0.00s)
+=== RUN   ExampleDeduplicate
+--- PASS: ExampleDeduplicate (0.00s)
+=== RUN   ExampleDeduplicateIgnoreCase
+--- PASS: ExampleDeduplicateIgnoreCase (0.00s)
+=== RUN   ExampleCounterLines
+--- PASS: ExampleCounterLines (0.00s)
+=== RUN   ExampleCounterLinesIgnoreCase
+--- PASS: ExampleCounterLinesIgnoreCase (0.00s)
+=== RUN   ExampleCounterLinesByPrefix
+--- PASS: ExampleCounterLinesByPrefix (0.00s)
+=== RUN   ExampleCounterLinesByPrefixIgnoreCase
+--- PASS: ExampleCounterLinesByPrefixIgnoreCase (0.00s)
+PASS
+ok      uniq/utils      0.202s
+*/
+
 // benchmarks
 //go test -bench=. -benchtime=10x -benchmem
 /*
@@ -328,17 +363,19 @@ PASS
 ok      uniq/utils      0.394s
 */
 
+// go test -cover
+/*
+PASS
+coverage: 96.4% of statements
+ok      uniq/utils      0.219s
+*/
+
 // analyze code coverage with tests
 // go test ./... -coverprofile cover.out
 /*
 ?       uniq    [no test files]
 ?       uniq/cli        [no test files]
---- FAIL: TestSubstring (0.00s)
-    strings_test.go:211: Substring(123 456 789, 0, 0, 0) = [0 11]; want [0 0]
-FAIL
-coverage: 95.2% of statements
-FAIL    uniq/utils      0.206s
-FAIL
+ok      uniq/utils      0.230s  coverage: 96.4% of statements
 */
 // open in browser: go tool cover -html=cover.out
 // generate html:  go tool cover -html=cover.out -o=cover.html
