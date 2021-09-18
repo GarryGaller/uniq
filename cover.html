@@ -55,7 +55,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">uniq/utils/strings.go (73.8%)</option>
+				<option value="file0">uniq/utils/strings.go (95.2%)</option>
 				
 				</select>
 			</div>
@@ -86,39 +86,39 @@ var reWord *regexp.Regexp = regexp.MustCompile(`\b(\S+)\b`)
 
 func Substring(
         line string,
-        numFields, skipChars, takeChars uint) (idx [2]uint) <span class="cov0" title="0">{
+        numFields, skipChars, takeChars uint) (idx [2]uint) <span class="cov8" title="1">{
         var (
                 start uint
                 end   uint = uint(len(line))
         )
 
-        if numFields &gt; 0 </span><span class="cov0" title="0">{
+        if numFields &gt; 0 </span><span class="cov8" title="1">{
                 fields := reWord.FindAllStringIndex(line, -1)
                 lf := uint(len(fields))
-                if numFields &lt; lf </span><span class="cov0" title="0">{
+                if numFields &lt; lf </span><span class="cov8" title="1">{
                         start = uint(fields[numFields][0])
-                }</span> else<span class="cov0" title="0"> {
+                }</span> else<span class="cov8" title="1"> {
                         start = end
                 }</span>
         }
 
-        <span class="cov0" title="0">if skipChars &gt; 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if skipChars &gt; 0 </span><span class="cov8" title="1">{
                 ll := uint(len(line[start:]))
-                if skipChars &lt; ll </span><span class="cov0" title="0">{
+                if skipChars &lt; ll </span><span class="cov8" title="1">{
                         start += skipChars
                 }</span> else<span class="cov0" title="0"> {
                         start = end
                 }</span>
         }
 
-        <span class="cov0" title="0">if takeChars &gt; 0 </span><span class="cov0" title="0">{
+        <span class="cov8" title="1">if takeChars &gt; 0 </span><span class="cov8" title="1">{
                 ll := uint(len(line[start:]))
-                if takeChars &lt; ll </span><span class="cov0" title="0">{
+                if takeChars &lt; ll </span><span class="cov8" title="1">{
                         end = start + takeChars
                 }</span>
         }
 
-        <span class="cov0" title="0">idx[0] = start
+        <span class="cov8" title="1">idx[0] = start
         idx[1] = end
 
         return</span>

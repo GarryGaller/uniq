@@ -155,6 +155,66 @@ func ExampleCounterLinesByPrefixIgnoreCase() {
 	// 2 aa
 }
 
+func TestSubstring(t *testing.T) {
+
+	testCases := []struct {
+		line     string
+		options  [3]uint // fields,skip,take
+		expected [2]uint // range
+	}{
+		{
+            "123 456 789",
+			[3]uint{0,0,0},
+			[2]uint{0,11},  // [123 456 789]
+		},
+
+		{
+            "123 456 789",
+			[3]uint{1,2,0},
+			[2]uint{6,11}, // 123 45[6 789]
+		},
+        
+        {
+            "123 456 789",
+			[3]uint{1,2,1}, 
+			[2]uint{6,7},  // 123 45[6] 789
+		},
+		
+        {
+            "123 456 789",
+			[3]uint{0,10,0},
+			[2]uint{10,11},   // 123 456 78[9]
+		},
+        
+        {
+            "123 456 789",
+			[3]uint{0,0,11}, 
+			[2]uint{0,11},  // [123 456 789]
+		},
+        
+        {
+            "123 456 789",
+			[3]uint{3,0,0},  // 123 45[6] 789
+			[2]uint{11,11},  // []
+		},
+        // fail case
+        {
+            "123 456 789",
+			[3]uint{0,0,0},  // 
+			[2]uint{0,0},   //   Substring(123 456 789, 0, 0, 0) = [0 11]; want [0 0]
+		},
+	}
+
+	for _, c := range testCases {
+		got := Substring(c.line, c.options[0], c.options[1], c.options[2])
+		if got != c.expected {
+			t.Errorf("Substring(%s, %d, %d, %d) = %v; want %v",
+				c.line, c.options[0], c.options[1], c.options[2],
+				got, c.expected)
+		}
+	}
+}
+
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randSeq(n int) string {
@@ -267,3 +327,18 @@ BenchmarkDeduplicate100000-4          10           3300190 ns/op          324222
 PASS
 ok      uniq/utils      0.394s
 */
+
+// analyze code coverage with tests
+// go test ./... -coverprofile cover.out
+/*
+?       uniq    [no test files]
+?       uniq/cli        [no test files]
+--- FAIL: TestSubstring (0.00s)
+    strings_test.go:211: Substring(123 456 789, 0, 0, 0) = [0 11]; want [0 0]
+FAIL
+coverage: 95.2% of statements
+FAIL    uniq/utils      0.206s
+FAIL
+*/
+// open in browser: go tool cover -html=cover.out
+// generate html:  go tool cover -html=cover.out -o=cover.html
