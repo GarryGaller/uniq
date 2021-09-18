@@ -322,7 +322,7 @@ func BenchmarkDeduplicate100000(b *testing.B) {
     }
 }
 
-// go test -v
+// go test -v ./utils
 /*
 === RUN   TestSubstring
 --- PASS: TestSubstring (0.00s)
@@ -351,7 +351,7 @@ ok      uniq/utils      0.202s
 */
 
 // benchmarks
-//go test -bench=. -benchtime=10x -benchmem
+//go test -bench=. -benchtime=10x -benchmem ./utils
 /*
 BenchmarkUnique10000-4                10            400020 ns/op           36170 B/op       2001 allocs/op
 BenchmarkDuplicates10000-4            10            100010 ns/op           20096 B/op       1001 allocs/op
@@ -363,7 +363,7 @@ PASS
 ok      uniq/utils      0.394s
 */
 
-// go test -cover
+// go test -cover ./utils
 /*
 PASS
 coverage: 96.4% of statements
