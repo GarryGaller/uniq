@@ -23,8 +23,8 @@ var testFile100K = GenerateRandomStrings(100000)
 func ExampleUnique() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    
-    cmd := cli.New()
+
+	cmd := cli.New()
 	Unique(reader, writer, cmd)
 	// Output:
 	// AAA
@@ -36,7 +36,7 @@ func ExampleUniqueIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 
 	Unique(reader, writer, cmd)
 	// Output:
@@ -46,9 +46,9 @@ func ExampleUniqueIgnoreCase() {
 func ExampleDuplicates() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    cmd := cli.New()
-	
-    Duplicates(reader, writer, cmd)
+	cmd := cli.New()
+
+	Duplicates(reader, writer, cmd)
 	// Output:
 	// bbb
 }
@@ -57,7 +57,7 @@ func ExampleDuplicatesIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 
 	Duplicates(reader, writer, cmd)
 	// Output:
@@ -68,8 +68,8 @@ func ExampleDuplicatesIgnoreCase() {
 func ExampleDeduplicate() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-    
-    cmd := cli.New()
+
+	cmd := cli.New()
 	Deduplicate(reader, writer, cmd)
 	// Output:
 	// AAA
@@ -81,9 +81,9 @@ func ExampleDeduplicate() {
 func ExampleDeduplicateIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
-	
-    cmd := cli.New()
-    cmd.Mapper = strings.ToLower
+
+	cmd := cli.New()
+	cmd.Mapper = strings.ToLower
 
 	Deduplicate(reader, writer, cmd)
 	// Output:
@@ -96,7 +96,7 @@ func ExampleCounterLines() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Mapper = func(s string) string { return s }
+	cmd.Mapper = func(s string) string { return s }
 
 	CounterLines(reader, writer, cmd)
 	// Output:
@@ -111,7 +111,7 @@ func ExampleCounterLinesIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 
 	CounterLines(reader, writer, cmd)
 	// Output:
@@ -125,7 +125,7 @@ func ExampleCounterLinesByPrefix() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Prefix = "aa"
+	cmd.Prefix = "aa"
 
 	CounterLinesByPrefix(reader, writer, cmd)
 	// Output:
@@ -136,7 +136,7 @@ func ExampleCounterLinesByPrefixIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-    cmd.Mapper = strings.ToLower
+	cmd.Mapper = strings.ToLower
 	cmd.Prefix = "aa"
 
 	CounterLinesByPrefix(reader, writer, cmd)
@@ -238,7 +238,7 @@ func BenchmarkUnique10000(b *testing.B) {
 	var reader = strings.NewReader(testFile10K)
 	var writer = io.Discard
 	cmd := cli.New()
-    
+
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -251,8 +251,8 @@ func BenchmarkDuplicates10000(b *testing.B) {
 	var reader = strings.NewReader(testFile10K)
 	var writer = io.Discard
 	cmd := cli.New()
-	
-    b.ResetTimer()
+
+	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
 		Duplicates(reader, writer, cmd)
@@ -264,7 +264,7 @@ func BenchmarkDeduplicate10000(b *testing.B) {
 	var reader = strings.NewReader(testFile10K)
 	var writer = io.Discard
 	cmd := cli.New()
-    
+
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -277,7 +277,7 @@ func BenchmarkUnique100000(b *testing.B) {
 	var reader = strings.NewReader(testFile100K)
 	var writer = io.Discard
 	cmd := cli.New()
-    
+
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -290,7 +290,7 @@ func BenchmarkDuplicates100000(b *testing.B) {
 	var reader = strings.NewReader(testFile100K)
 	var writer = io.Discard
 	cmd := cli.New()
-    
+
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -303,7 +303,7 @@ func BenchmarkDeduplicate100000(b *testing.B) {
 	var reader = strings.NewReader(testFile100K)
 	var writer = io.Discard
 	cmd := cli.New()
-    
+
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
