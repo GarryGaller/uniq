@@ -9,27 +9,30 @@ import (
 )
 
 type Cmd struct {
-	Prefix     string
-	Repeated   bool
-	Unique     bool
-	Count      bool
-	IgnoreCase bool
-	NumFields  uint
-	SkipChars  uint
-	TakeChars  uint
-	Range      bool
-	Colorize   bool
-	Mapper     func(string) string
-	Cutter     func(string) string
-	Fprintln   func(io.Writer, string)
+	Prefix        string
+	Repeated      bool
+	Unique        bool
+	Count         bool
+	IgnoreCase    bool
+	NumFields     uint
+	SkipChars     uint
+	TakeChars     uint
+	Range         bool
+	Colorize      bool
+	FormatCounter string
+	BufferSize    uint
+    Mapper        func(string) string
+	Cutter        func(string) string
+	Fprintln      func(io.Writer, string)
 }
 
 func New() *Cmd {
 
 	return &Cmd{
-		Mapper: func(s string) string { return s },
-		Cutter: func(s string) string { return s },
-        Fprintln: func(w io.Writer, s string) { fmt.Fprintln(w, s) },
+		FormatCounter: "%d %s",
+		Mapper:        func(s string) string { return s },
+		Cutter:        func(s string) string { return s },
+		Fprintln:      func(w io.Writer, s string) { fmt.Fprintln(w, s) },
 	}
 }
 
@@ -62,6 +65,7 @@ func (cmd *Cmd) Parse() {
 
 	flag.BoolVar(&cmd.Range, "range", false, "Показать использумый диапазон символов как срез")
 	flag.BoolVar(&cmd.Colorize, "color", false, "Выделять использумый диапазон символов цветом")
-
+    
+    flag.UintVar(&cmd.BufferSize, "buffer-size", 0, "Установить максимальный размер буфера для сканирования файла (>64kb)")
 	flag.Parse()
 }

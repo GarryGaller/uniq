@@ -18,9 +18,6 @@ bbb
 bbb
 ccc`)
 
-var testFile10K = GenerateRandomStrings(10000)
-var testFile100K = GenerateRandomStrings(100000)
-
 func ExampleUnique() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
@@ -36,6 +33,7 @@ func ExampleUnique() {
 func ExampleUniqueIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 	cmd.Mapper = strings.ToLower
 
@@ -44,9 +42,23 @@ func ExampleUniqueIgnoreCase() {
 	// ccc
 }
 
+func ExampleUniqueWithBuffer() {
+	var reader = strings.NewReader(testFile)
+	var writer = os.Stdout
+
+	cmd := cli.New()
+	cmd.BufferSize = 128
+	Unique(reader, writer, cmd)
+	// Output:
+	// AAA
+	// aaa
+	// ccc
+}
+
 func ExampleDuplicates() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 
 	Duplicates(reader, writer, cmd)
@@ -57,6 +69,7 @@ func ExampleDuplicates() {
 func ExampleDuplicatesIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 	cmd.Mapper = strings.ToLower
 
@@ -66,11 +79,24 @@ func ExampleDuplicatesIgnoreCase() {
 	// bbb
 }
 
+func ExampleDuplicatesWithBuffer() {
+	var reader = strings.NewReader(testFile)
+	var writer = os.Stdout
+
+	cmd := cli.New()
+	cmd.BufferSize = 128
+
+	Duplicates(reader, writer, cmd)
+	// Output:
+	// bbb
+}
+
 func ExampleDeduplicate() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 
 	cmd := cli.New()
+
 	Deduplicate(reader, writer, cmd)
 	// Output:
 	// AAA
@@ -93,11 +119,25 @@ func ExampleDeduplicateIgnoreCase() {
 	// ccc
 }
 
+func ExampleDeduplicateWithBuffer() {
+	var reader = strings.NewReader(testFile)
+	var writer = os.Stdout
+
+	cmd := cli.New()
+	cmd.BufferSize = 128
+
+	Deduplicate(reader, writer, cmd)
+	// Output:
+	// AAA
+	// aaa
+	// bbb
+	// ccc
+}
+
 func ExampleCounterLines() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
 	cmd := cli.New()
-	cmd.Mapper = func(s string) string { return s }
 
 	CounterLines(reader, writer, cmd)
 	// Output:
@@ -111,6 +151,7 @@ func ExampleCounterLines() {
 func ExampleCounterLinesIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 	cmd.Mapper = strings.ToLower
 
@@ -122,9 +163,26 @@ func ExampleCounterLinesIgnoreCase() {
 
 }
 
+func ExampleCounterLinesWithBuffer() {
+	var reader = strings.NewReader(testFile)
+	var writer = os.Stdout
+
+	cmd := cli.New()
+	cmd.BufferSize = 128
+
+	CounterLines(reader, writer, cmd)
+	// Output:
+	// 1 AAA
+	// 1 aaa
+	// 2 bbb
+	// 1 ccc
+
+}
+
 func ExampleCounterLinesByPrefix() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 	cmd.Prefix = "aa"
 
@@ -136,6 +194,7 @@ func ExampleCounterLinesByPrefix() {
 func ExampleCounterLinesByPrefixIgnoreCase() {
 	var reader = strings.NewReader(testFile)
 	var writer = os.Stdout
+
 	cmd := cli.New()
 	cmd.Mapper = strings.ToLower
 	cmd.Prefix = "aa"
@@ -143,6 +202,19 @@ func ExampleCounterLinesByPrefixIgnoreCase() {
 	CounterLinesByPrefix(reader, writer, cmd)
 	// Output:
 	// 2 aa
+}
+
+func ExampleCounterLinesByPrefixWithBuffer() {
+	var reader = strings.NewReader(testFile)
+	var writer = os.Stdout
+
+	cmd := cli.New()
+	cmd.BufferSize = 128
+	cmd.Prefix = "aa"
+
+	CounterLinesByPrefix(reader, writer, cmd)
+	// Output:
+	// 1 aa
 }
 
 func TestSubstring(t *testing.T) {
@@ -213,6 +285,10 @@ func TestSubstring(t *testing.T) {
 	}
 }
 
+// benchmarks
+var testFile10K = GenerateRandomStrings(10000)
+var testFile100K = GenerateRandomStrings(100000)
+
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randSeq(n int) string {
@@ -232,24 +308,22 @@ func GenerateRandomStrings(count int) (outline string) {
 		data = append(data, randSeq(10))
 	}
 	sort.Strings(data)
-	outline = strings.Join(data,"\n")
+	outline = strings.Join(data, "\n")
 	return
 }
-  
 
 func GenerateRepeatedStrings(count int) (outline string) {
 
 	var data = make([]string, 0, count)
 	var str = "aaaaaaaaaa"
-    
-    for i := 0; i < count; i++ {
+
+	for i := 0; i < count; i++ {
 		data = append(data, str)
 	}
-	
-	outline = strings.Join(data,"\n")
+
+	outline = strings.Join(data, "\n")
 	return
 }
-
 
 func BenchmarkUnique10000(b *testing.B) {
 
@@ -295,6 +369,20 @@ func BenchmarkUnique100000(b *testing.B) {
 	var reader = strings.NewReader(testFile100K)
 	var writer = io.Discard
 	cmd := cli.New()
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		Unique(reader, writer, cmd)
+	}
+}
+
+func BenchmarkUniqueWithBuffer100000(b *testing.B) {
+
+	var reader = strings.NewReader(testFile10K)
+	var writer = io.Discard
+	cmd := cli.New()
+	cmd.BufferSize = 256
 
 	b.ResetTimer()
 
@@ -357,24 +445,9 @@ PASS
 ok      uniq/utils      0.202s
 */
 
-// benchmarks
-//go test -bench=. -benchmem ./utils
-/*
-BenchmarkUnique10000-4            292665              3851 ns/op            4098 B/op          1 allocs/op
-BenchmarkDuplicates10000-4        307674              3566 ns/op            4096 B/op          1 allocs/op
-BenchmarkDeduplicate10000-4       299982              3810 ns/op            4098 B/op          1 allocs/op
-BenchmarkUnique100000-4           264003              3913 ns/op            4109 B/op          1 allocs/op
-BenchmarkDuplicates100000-4       329068              3610 ns/op            4100 B/op          1 allocs/op
-BenchmarkDeduplicate100000-4      265422              3956 ns/op            4109 B/op          1 allocs/op
-PASS
-ok      uniq/utils      8.680s
-*/
-
 // go test -cover ./utils
 /*
-PASS
-coverage: 96.4% of statements
-ok      uniq/utils      0.219s
+ok      uniq/utils      0.270s  coverage: 96.8% of statements
 */
 
 // analyze code coverage with tests
@@ -382,14 +455,31 @@ ok      uniq/utils      0.219s
 /*
 ?       uniq    [no test files]
 ?       uniq/cli        [no test files]
-ok      uniq/utils      0.230s  coverage: 96.4% of statements
+ok      uniq/utils      0.274s  coverage: 96.8% of statements
 */
 // open in browser: go tool cover -html=cover.out
-// generate html:  go tool cover -html=cover.out -o=cover.html  
+// generate html:  go tool cover -html=cover.out -o=cover.html
 
+// benchmarks
+//go test -bench=. -benchmem ./utils
+/*
+BenchmarkUnique10000-4                    292665              3783 ns/op            4098 B/op          1 allocs/op
+BenchmarkDuplicates10000-4                324304              3593 ns/op            4096 B/op          1 allocs/op
+BenchmarkDeduplicate10000-4               292665              3858 ns/op            4098 B/op          1 allocs/op
+BenchmarkUnique100000-4                   270598              3973 ns/op            4108 B/op          1 allocs/op
+BenchmarkUniqueWithBuffer100000-4           5454            200598 ns/op          262256 B/op          4 allocs/op
+BenchmarkDuplicates100000-4               328314              3625 ns/op            4100 B/op          1 allocs/op
+BenchmarkDeduplicate100000-4              253906              4025 ns/op            4109 B/op          1 allocs/op
+PASS
+ok      uniq/utils      9.822s
+*/
 
 // go test -bench=. -benchmem -cpuprofile=cpu.prof -memprofile=mem.prof ./utils
 // go tool pprof -svg utils.test.exe mem.prof >mem.svg
-// go tool pprof -svg utils.test.exe cpu.prof >cpu.svg  
+// go tool pprof -svg utils.test.exe cpu.prof >cpu.svg
 
-// go test -bench=BenchmarkUnique10000 -benchmem -cpuprofile=cpu_unique.prof -memprofile=mem_unique.prof ./utils 
+// включить все данные профиля: -nodefraction=0
+// go tool pprof -nodefraction=0 -svg utils.test.exe mem.prof >mem.svg
+// go tool pprof -nodefraction=0 -svg utils.test.exe cpu.prof >cpu.svg
+
+// go test -bench=BenchmarkUnique10000 -benchmem -cpuprofile=unique_cpu.prof -memprofile=unique_mem.prof ./utils

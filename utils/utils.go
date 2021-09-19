@@ -59,7 +59,11 @@ func Deduplicate(
 	cmd *cli.Cmd) {
 
 	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+	if cmd.BufferSize*1024 > bufio.MaxScanTokenSize {
+		buf := make([]byte, cmd.BufferSize*1024)
+		scanner.Buffer(buf, int(cmd.BufferSize*1024))
+	}
+
 	scanner.Scan()
 	prev := cmd.Mapper(scanner.Text())
 
@@ -84,7 +88,10 @@ func Duplicates(
 	cmd *cli.Cmd) {
 
 	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+	if cmd.BufferSize*1024 > bufio.MaxScanTokenSize {
+		buf := make([]byte, cmd.BufferSize*1024)
+		scanner.Buffer(buf, int(cmd.BufferSize*1024))
+	}
 	scanner.Scan()
 	prev := cmd.Mapper(scanner.Text())
 	cnt := 1
@@ -113,7 +120,10 @@ func Unique(
 	cmd *cli.Cmd) {
 
 	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+	if cmd.BufferSize*1024 > bufio.MaxScanTokenSize {
+		buf := make([]byte, cmd.BufferSize*1024)
+		scanner.Buffer(buf, int(cmd.BufferSize*1024))
+	}
 	scanner.Scan()
 	prev := cmd.Mapper(scanner.Text())
 	cnt := 1
@@ -146,7 +156,10 @@ func CounterLines(
 	/* Prefix lines by the number of occurrences */
 
 	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+	if cmd.BufferSize*1024 > bufio.MaxScanTokenSize {
+		buf := make([]byte, cmd.BufferSize*1024)
+		scanner.Buffer(buf, int(cmd.BufferSize*1024))
+	}
 	scanner.Scan()
 	prev := cmd.Mapper(scanner.Text())
 	cnt := 1
@@ -154,14 +167,14 @@ func CounterLines(
 	for scanner.Scan() {
 		curr := cmd.Cutter(cmd.Mapper(scanner.Text()))
 		if cmd.Cutter(prev) != cmd.Cutter(curr) {
-			cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, prev))
+			cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, prev))
 			prev = curr
 			cnt = 1
 		} else {
 			cnt += 1
 		}
 	}
-	cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, prev))
+	cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, prev))
 }
 
 func CounterLinesByPrefix(
@@ -171,7 +184,10 @@ func CounterLinesByPrefix(
 	/*The number of rows in which there is a specified substring*/
 
 	scanner := bufio.NewScanner(reader)
-	scanner.Split(bufio.ScanLines)
+	if cmd.BufferSize*1024 > bufio.MaxScanTokenSize {
+		buf := make([]byte, cmd.BufferSize*1024)
+		scanner.Buffer(buf, int(cmd.BufferSize*1024))
+	}
 	cnt := 0
 
 	for scanner.Scan() {
@@ -181,5 +197,5 @@ func CounterLinesByPrefix(
 		}
 	}
 
-	cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, cmd.Prefix))
+	cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, cmd.Prefix))
 }

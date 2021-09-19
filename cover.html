@@ -55,7 +55,7 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">uniq/utils/strings.go (96.4%)</option>
+				<option value="file0">uniq/utils/utils.go (96.8%)</option>
 				
 				</select>
 			</div>
@@ -130,8 +130,12 @@ func Deduplicate(
         cmd *cli.Cmd) <span class="cov8" title="1">{
 
         scanner := bufio.NewScanner(reader)
-        scanner.Split(bufio.ScanLines)
-        scanner.Scan()
+        if cmd.BufferSize*1024 &gt; bufio.MaxScanTokenSize </span><span class="cov8" title="1">{
+                buf := make([]byte, cmd.BufferSize*1024)
+                scanner.Buffer(buf, int(cmd.BufferSize*1024))
+        }</span>
+
+        <span class="cov8" title="1">scanner.Scan()
         prev := cmd.Mapper(scanner.Text())
 
         for scanner.Scan() </span><span class="cov8" title="1">{
@@ -155,8 +159,11 @@ func Duplicates(
         cmd *cli.Cmd) <span class="cov8" title="1">{
 
         scanner := bufio.NewScanner(reader)
-        scanner.Split(bufio.ScanLines)
-        scanner.Scan()
+        if cmd.BufferSize*1024 &gt; bufio.MaxScanTokenSize </span><span class="cov8" title="1">{
+                buf := make([]byte, cmd.BufferSize*1024)
+                scanner.Buffer(buf, int(cmd.BufferSize*1024))
+        }</span>
+        <span class="cov8" title="1">scanner.Scan()
         prev := cmd.Mapper(scanner.Text())
         cnt := 1
 
@@ -184,8 +191,11 @@ func Unique(
         cmd *cli.Cmd) <span class="cov8" title="1">{
 
         scanner := bufio.NewScanner(reader)
-        scanner.Split(bufio.ScanLines)
-        scanner.Scan()
+        if cmd.BufferSize*1024 &gt; bufio.MaxScanTokenSize </span><span class="cov8" title="1">{
+                buf := make([]byte, cmd.BufferSize*1024)
+                scanner.Buffer(buf, int(cmd.BufferSize*1024))
+        }</span>
+        <span class="cov8" title="1">scanner.Scan()
         prev := cmd.Mapper(scanner.Text())
         cnt := 1
 
@@ -217,22 +227,25 @@ func CounterLines(
         /* Prefix lines by the number of occurrences */
 
         scanner := bufio.NewScanner(reader)
-        scanner.Split(bufio.ScanLines)
-        scanner.Scan()
+        if cmd.BufferSize*1024 &gt; bufio.MaxScanTokenSize </span><span class="cov8" title="1">{
+                buf := make([]byte, cmd.BufferSize*1024)
+                scanner.Buffer(buf, int(cmd.BufferSize*1024))
+        }</span>
+        <span class="cov8" title="1">scanner.Scan()
         prev := cmd.Mapper(scanner.Text())
         cnt := 1
 
         for scanner.Scan() </span><span class="cov8" title="1">{
                 curr := cmd.Cutter(cmd.Mapper(scanner.Text()))
                 if cmd.Cutter(prev) != cmd.Cutter(curr) </span><span class="cov8" title="1">{
-                        cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, prev))
+                        cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, prev))
                         prev = curr
                         cnt = 1
                 }</span> else<span class="cov8" title="1"> {
                         cnt += 1
                 }</span>
         }
-        <span class="cov8" title="1">cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, prev))</span>
+        <span class="cov8" title="1">cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, prev))</span>
 }
 
 func CounterLinesByPrefix(
@@ -242,8 +255,11 @@ func CounterLinesByPrefix(
         /*The number of rows in which there is a specified substring*/
 
         scanner := bufio.NewScanner(reader)
-        scanner.Split(bufio.ScanLines)
-        cnt := 0
+        if cmd.BufferSize*1024 &gt; bufio.MaxScanTokenSize </span><span class="cov8" title="1">{
+                buf := make([]byte, cmd.BufferSize*1024)
+                scanner.Buffer(buf, int(cmd.BufferSize*1024))
+        }</span>
+        <span class="cov8" title="1">cnt := 0
 
         for scanner.Scan() </span><span class="cov8" title="1">{
                 line := cmd.Cutter(cmd.Mapper(scanner.Text()))
@@ -252,7 +268,7 @@ func CounterLinesByPrefix(
                 }</span>
         }
 
-        <span class="cov8" title="1">cmd.Fprintln(writer, fmt.Sprintf("%d %s", cnt, cmd.Prefix))</span>
+        <span class="cov8" title="1">cmd.Fprintln(writer, fmt.Sprintf(cmd.FormatCounter, cnt, cmd.Prefix))</span>
 }
 </pre>
 		

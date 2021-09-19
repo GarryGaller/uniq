@@ -12,6 +12,7 @@
 *.prof
 *.svg
 *.exe
+*.out
 
 !bin/uniq.exe
 
