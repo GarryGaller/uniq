@@ -104,7 +104,8 @@ func main() {
             fmt.Fprintf(writer, "%s\n", line)
         } else {
             // Optimal ?
-            io.WriteString(writer, line+"\n")
+            io.WriteString(writer, line)
+            io.WriteString(writer, "\n")
         }
     }
 

@@ -385,4 +385,11 @@ ok      uniq/utils      0.219s
 ok      uniq/utils      0.230s  coverage: 96.4% of statements
 */
 // open in browser: go tool cover -html=cover.out
-// generate html:  go tool cover -html=cover.out -o=cover.html
+// generate html:  go tool cover -html=cover.out -o=cover.html  
+
+
+// go test -bench=. -benchmem -cpuprofile=cpu.prof -memprofile=mem.prof ./utils
+// go tool pprof -svg utils.test.exe mem.prof >mem.svg
+// go tool pprof -svg utils.test.exe cpu.prof >cpu.svg  
+
+// go test -bench=BenchmarkUnique10000 -benchmem -cpuprofile=cpu_unique.prof -memprofile=mem_unique.prof ./utils 

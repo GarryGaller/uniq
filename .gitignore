@@ -9,6 +9,11 @@
 *.so
 *.dylib
 *.cookie
+*.prof
+*.svg
+*.exe
+
+!bin/uniq.exe
 
 logs/
 vendor/
