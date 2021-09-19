@@ -4,6 +4,7 @@ import (
 	"io"
 	"math/rand"
 	"os"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -223,15 +224,32 @@ func randSeq(n int) string {
 }
 
 func GenerateRandomStrings(count int) (outline string) {
-	var builder strings.Builder
+
+	var data = make([]string, 0, count)
 	rand.Seed(time.Now().UnixNano())
 
 	for i := 0; i < count; i++ {
-		builder.WriteString(randSeq(10) + "\n")
+		data = append(data, randSeq(10))
 	}
-	outline = builder.String()
+	sort.Strings(data)
+	outline = strings.Join(data,"\n")
 	return
 }
+  
+
+func GenerateRepeatedStrings(count int) (outline string) {
+
+	var data = make([]string, 0, count)
+	var str = "aaaaaaaaaa"
+    
+    for i := 0; i < count; i++ {
+		data = append(data, str)
+	}
+	
+	outline = strings.Join(data,"\n")
+	return
+}
+
 
 func BenchmarkUnique10000(b *testing.B) {
 
@@ -342,14 +360,14 @@ ok      uniq/utils      0.202s
 // benchmarks
 //go test -bench=. -benchmem ./utils
 /*
-BenchmarkUnique10000-4            299982              3814 ns/op            4098 B/op          1 allocs/op
-BenchmarkDuplicates10000-4        333314              3600 ns/op            4096 B/op          1 allocs/op
-BenchmarkDeduplicate10000-4       299982              3890 ns/op            4098 B/op          1 allocs/op
-BenchmarkUnique100000-4           262947              3963 ns/op            4109 B/op          1 allocs/op
-BenchmarkDuplicates100000-4       329133              3628 ns/op            4100 B/op          1 allocs/op
-BenchmarkDeduplicate100000-4      261338              3999 ns/op            4109 B/op          1 allocs/op
+BenchmarkUnique10000-4            292665              3851 ns/op            4098 B/op          1 allocs/op
+BenchmarkDuplicates10000-4        307674              3566 ns/op            4096 B/op          1 allocs/op
+BenchmarkDeduplicate10000-4       299982              3810 ns/op            4098 B/op          1 allocs/op
+BenchmarkUnique100000-4           264003              3913 ns/op            4109 B/op          1 allocs/op
+BenchmarkDuplicates100000-4       329068              3610 ns/op            4100 B/op          1 allocs/op
+BenchmarkDeduplicate100000-4      265422              3956 ns/op            4109 B/op          1 allocs/op
 PASS
-ok      uniq/utils      8.768s
+ok      uniq/utils      8.680s
 */
 
 // go test -cover ./utils
